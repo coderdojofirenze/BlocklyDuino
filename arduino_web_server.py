@@ -108,7 +108,7 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         if length:
             text = self.rfile.read(length)
                         
-            print "sketch to upload: " + text
+            print ("sketch to upload: " + text)
 
             dirname = tempfile.mkdtemp()
             sketchname = os.path.join(dirname, os.path.basename(dirname)) + ".ino"
@@ -116,7 +116,7 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             f.write(text + "\n")
             f.close()
 
-            print "created sketch at %s" % (sketchname,)
+            print ("created sketch at %s" % (sketchname,))
         
             # invoke arduino to build/upload
             compile_args = [
@@ -132,11 +132,11 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 ])
             compile_args.append(sketchname)
 
-            print "Uploading with %s" % (" ".join(compile_args))
+            print ("Uploading with %s" % (" ".join(compile_args)))
             rc = subprocess.call(compile_args)
 
             if not rc == 0:
-                print "arduino --upload returned " + `rc`                            
+                print ("arduino --upload returned " + rc)
                 self.send_response(400)
             else:
                 self.send_response(200)
@@ -147,7 +147,7 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    print "Blocklyduino can now be accessed at http://127.0.0.1:8080/"
+    print ("Blocklyduino can now be accessed at http://127.0.0.1:8080/")
     server = BaseHTTPServer.HTTPServer(("127.0.0.1", 8080), Handler)
     server.pages = {}
     server.serve_forever()
